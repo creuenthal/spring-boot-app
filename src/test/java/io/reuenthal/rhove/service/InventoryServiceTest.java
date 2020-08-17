@@ -1,7 +1,7 @@
 package io.reuenthal.rhove.service;
 
 import io.reuenthal.rhove.entities.Category;
-import io.reuenthal.rhove.entities.Item;
+import io.reuenthal.rhove.entities.Product;
 import io.reuenthal.rhove.entities.StockedItem;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,34 +24,34 @@ class InventoryServiceTest {
 
     @Test
     public void shouldRetrieveItemsAsTheyAreStored() {
-        List<Item> expected = Arrays.asList(new Item("test1"), new Item("test2"));
+        List<Product> expected = Arrays.asList(new Product("test1"), new Product("test2"));
         expected.forEach(service::storeItem);
-        List<Item> items = service.listItems();
-        Assertions.assertIterableEquals(expected, items);
+        List<Product> products = service.itemCatalog();
+        Assertions.assertIterableEquals(expected, products);
     }
 
     @Test
     public void shouldPersistEveryFieldInAnItem() {
-        Item apple = new Item("id", "Honeycrisp Apple", Category.FRUIT, true);
+        Product apple = new Product("id", "Honeycrisp Apple", Category.FRUIT, true);
         service.storeItem(apple);
-        List<Item> items = service.listItems();
-        Assertions.assertEquals(apple, items.get(0));
+        List<Product> products = service.itemCatalog();
+        Assertions.assertEquals(apple, products.get(0));
     }
 
     @Test
     public void shouldNotDoubleUpOnItems() {
-        Item test = new Item("id", "Test", Category.VEGETABLE, true);
+        Product test = new Product("id", "Test", Category.VEGETABLE, true);
         service.storeItem(test);
         service.storeItem(test);
 
-        List<Item> items = service.listItems();
-        Assertions.assertEquals(1, items.size());
-        Assertions.assertEquals(test, items.get(0));
+        List<Product> products = service.itemCatalog();
+        Assertions.assertEquals(1, products.size());
+        Assertions.assertEquals(test, products.get(0));
     }
 
     @Test
     public void shouldManageInventoryByDate() {
-        Item test = new Item("id", "Test", Category.VEGETABLE, true);
+        Product test = new Product("id", "Test", Category.VEGETABLE, true);
         StockedItem first = service.storeItem(test);
         StockedItem second = service.storeItem(test);
 

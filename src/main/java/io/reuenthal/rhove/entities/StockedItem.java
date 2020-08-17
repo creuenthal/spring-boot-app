@@ -11,13 +11,13 @@ public class StockedItem {
     @Id
     @GeneratedValue()
     private Long id;
-    private String itemKey;
+    private String productKey;
     private Long timeAcquired;
 
     public StockedItem() {}
 
-    public StockedItem(String itemKey, Long timeAcquired) {
-        this.itemKey = itemKey;
+    public StockedItem(String productKey, Long timeAcquired) {
+        this.productKey = productKey;
         this.timeAcquired = timeAcquired;
     }
 
@@ -29,12 +29,12 @@ public class StockedItem {
         this.id = id;
     }
 
-    public String getItemKey() {
-        return itemKey;
+    public String getProductKey() {
+        return productKey;
     }
 
-    public void setItemKey(String itemKey) {
-        this.itemKey = itemKey;
+    public void setProductKey(String productKey) {
+        this.productKey = productKey;
     }
 
     public Long getTimeAcquired() {
@@ -51,12 +51,12 @@ public class StockedItem {
         if (o == null || getClass() != o.getClass()) return false;
         StockedItem that = (StockedItem) o;
         return Objects.equals(id, that.id) &&
-                Objects.equals(itemKey, that.itemKey) &&
+                Objects.equals(productKey, that.productKey) &&
                 Objects.equals(timeAcquired, that.timeAcquired);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, itemKey, timeAcquired);
+        return Objects.hash(id, productKey, timeAcquired);
     }
 }

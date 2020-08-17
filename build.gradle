@@ -15,7 +15,8 @@ repositories {
 dependencies {
 	runtime 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//TODO:Uncomment this to re-enable spring security
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

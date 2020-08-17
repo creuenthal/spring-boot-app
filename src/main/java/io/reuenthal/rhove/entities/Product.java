@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Item {
+public class Product {
 
     @Id
     private String id;
@@ -17,13 +17,13 @@ public class Item {
     private Category category;
     private Boolean perishable;
 
-    public Item() {}
+    public Product() {}
 
-    public Item(String id) {
+    public Product(String id) {
         this.id = id;
     }
 
-    public Item(String id, String name, Category category, Boolean perishable) {
+    public Product(String id, String name, Category category, Boolean perishable) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -66,11 +66,11 @@ public class Item {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return id.equals(item.id) &&
-                Objects.equals(name, item.name) &&
-                category == item.category &&
-                Objects.equals(perishable, item.perishable);
+        Product product = (Product) o;
+        return id.equals(product.id) &&
+                Objects.equals(name, product.name) &&
+                category == product.category &&
+                Objects.equals(perishable, product.perishable);
     }
 
     @Override
