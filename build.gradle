@@ -1,7 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.3.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id "com.github.node-gradle.node" version "2.2.4"
 }
 
 group = 'io.reuenthal'
@@ -9,24 +10,62 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '14'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	runtime 'com.h2database:h2'
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-	implementation 'com.jayway.jsonpath:json-path:2.4.0'
-	//TODO:Uncomment this to re-enable spring security
+    runtime 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'com.jayway.jsonpath:json-path:2.4.0'
+    //TODO:Uncomment this to re-enable spring security
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation 'org.springframework.security:spring-security-test'
-	testImplementation 'org.mockito:mockito-core:2.21.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-core:2.21.0'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
+
+node {
+    download = true
+
+    // Set the work directory for unpacking node
+    workDir = file("${project.buildDir}/nodejs")
+
+    // Set the work directory for NPM
+    npmWorkDir = file("${project.buildDir}/npm")
+}
+
+task appNpmInstall(type: NpmTask) {
+    description = "Installs all dependencies from package.json"
+    workingDir = file("${project.projectDir}/src/main/webapp")
+    args = ["install"]
+}
+
+task appNpmBuild(type: NpmTask) {
+    description = "Builds production version of the webapp"
+    workingDir = file("${project.projectDir}/src/main/webapp")
+    args = ["run", "build"]
+}
+
+task copyWebApp(type: Copy) {
+    from 'src/main/webapp/build'
+    into 'build/resources/main/static/.'
+}
+
+task copyWebAppDev(type: Copy) {
+    from 'src/main/webapp/build'
+    into 'src/main/resources/.'
+}
+
+appNpmBuild.dependsOn appNpmInstall
+copyWebApp.dependsOn appNpmBuild
+compileJava.dependsOn copyWebApp
+copyWebAppDev.dependsOn appNpmBuild
+bootRun.dependsOn copyWebAppDev
