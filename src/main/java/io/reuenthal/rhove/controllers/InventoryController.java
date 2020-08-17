@@ -1,6 +1,8 @@
 package io.reuenthal.rhove.controllers;
 
+import io.reuenthal.rhove.entities.Inventory;
 import io.reuenthal.rhove.entities.Product;
+import io.reuenthal.rhove.entities.ProductList;
 import io.reuenthal.rhove.entities.StockedItem;
 import io.reuenthal.rhove.service.InventoryService;
 import io.reuenthal.rhove.service.ProductLookupService;
@@ -28,12 +30,12 @@ public class InventoryController {
     }
 
     @GetMapping("/inventory")
-    public List<StockedItem> getInventory() {
-        return inventoryService.inventory();
+    public Inventory getInventory() {
+        return new Inventory(inventoryService.inventory());
     }
 
     @GetMapping("/catalog")
-    public List<Product> getCatalog() {
-        return inventoryService.itemCatalog();
+    public ProductList getCatalog() {
+        return new ProductList(inventoryService.itemCatalog());
     }
 }
